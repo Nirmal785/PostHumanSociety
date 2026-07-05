@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Post Human Society — Transmission Archive</title>
+<meta name="description" content="An archive of live whiteboard sessions on crypto, AI, economics and the road ahead — Post Human Society.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #08090a;
+    --bg-raised: #131518;
+    --bg-raised-2: #191c20;
+    --glass: rgba(255,255,255,0.04);
+    --ink: #f1ede2;
+    --ink-dim: #b7b2a3;
+    --muted: #7d8189;
+    --line: #26282d;
+    --line-soft: #1a1c20;
+    --signal: #ffb400;
+    --signal-soft: rgba(255,180,0,0.14);
+
+    --c-crypto: #ffb400;
+    --c-ai: #6fd3c7;
+    --c-economy: #8ea9ff;
+    --c-culture: #c792ea;
+    --c-career: #7ee08a;
+
+    --font-hero: 'Unbounded', sans-serif;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Public Sans', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a{ color: inherit; }
+  img{ max-width:100%; display:block; }
+  ::selection{ background: var(--signal-soft); color: var(--ink); }
+
+  .wrap{
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  .grain{
+    position: fixed; inset:0; pointer-events:none; z-index: 5;
+    opacity: 0.035; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ---------- nav ---------- */
+  header{
+    position: sticky; top:0; z-index: 40;
+    backdrop-filter: blur(12px);
+    background: rgba(8,9,10,0.6);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 16px 0;
+  }
+  .brand{
+    display:flex; flex-direction:column; gap:2px; text-decoration:none;
+  }
+  .brand-mark{
+    font-family: var(--font-display); font-weight:700; font-size: 16px;
+    letter-spacing: 0.02em;
+  }
+  .brand-mark span{ color: var(--signal); }
+  .brand-sub{
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em;
+    color: var(--muted); text-transform: uppercase;
+  }
+  .nav-links{
+    display:flex; align-items:center; gap: 28px;
+    font-family: var(--font-mono); font-size: 12.5px; letter-spacing: 0.04em;
+  }
+  .nav-links a{
+    text-decoration:none; color: var(--ink-dim);
+    padding: 6px 0; border-bottom: 1px solid transparent;
+    transition: color .2s ease, border-color .2s ease;
+  }
+  .nav-links a:hover{ color: var(--signal); border-color: var(--signal); }
+  .nav-links .pill{
+    color: var(--bg); background: var(--signal);
+    padding: 8px 14px; border-radius: 999px; border-bottom:none;
+    font-weight: 600;
+  }
+  .nav-links .pill:hover{ color: var(--bg); filter: brightness(1.08); }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position: relative; z-index: 2;
+    min-height: 92vh;
+    display:flex; align-items:flex-end;
+    padding: 80px 0 64px;
+    border-bottom: 1px solid var(--line-soft);
+    overflow:hidden;
+  }
+  .hero-bg{
+    position:absolute; inset:0; z-index:-2;
+    background-image: url('images/vd-04.jpg');
+    background-size: cover; background-position: center 30%;
+    filter: saturate(0.85) contrast(1.05);
+    transform: scale(1.03);
+  }
+  .hero-scrim{
+    position:absolute; inset:0; z-index:-1;
+    background:
+      linear-gradient(180deg, rgba(8,9,10,0.55) 0%, rgba(8,9,10,0.55) 30%, rgba(8,9,10,0.92) 78%, #08090a 100%),
+      linear-gradient(90deg, rgba(8,9,10,0.75) 0%, rgba(8,9,10,0.15) 55%, rgba(8,9,10,0.55) 100%);
+  }
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family: var(--font-mono); font-size: 11.5px; letter-spacing:0.16em;
+    color: var(--signal); text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .dot{
+    width:7px; height:7px; border-radius:50%; background: var(--signal);
+    box-shadow: 0 0 0 0 rgba(255,180,0,0.6);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse{
+    0%{ box-shadow: 0 0 0 0 rgba(255,180,0,0.55); }
+    70%{ box-shadow: 0 0 0 8px rgba(255,180,0,0); }
+    100%{ box-shadow: 0 0 0 0 rgba(255,180,0,0); }
+  }
+
+  h1.mega{
+    font-family: var(--font-hero);
+    font-weight: 900;
+    font-size: clamp(44px, 9vw, 118px);
+    line-height: 0.94;
+    letter-spacing: -0.01em;
+    margin: 0 0 26px;
+    text-transform: uppercase;
+    background: linear-gradient(100deg, #ffe9b0, var(--signal) 22%, #ff8a5c 40%, #c792ea 62%, #6fd3c7 80%, var(--signal) 100%);
+    background-size: 320% auto;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: shine 10s linear infinite;
+  }
+  @keyframes shine{ to{ background-position: 320% center; } }
+
+  .hero-sub{
+    font-size: 17px; color: var(--ink-dim); max-width: 52ch;
+    margin: 0 0 34px;
+  }
+
+  .hero-cta{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom: 46px; }
+  .btn{
+    font-family: var(--font-mono); font-size: 12.5px; letter-spacing: 0.06em;
+    text-transform: uppercase; text-decoration:none;
+    padding: 14px 22px; border-radius: 999px;
+    display:inline-flex; align-items:center; gap:8px;
+    transition: all .2s ease;
+  }
+  .btn-solid{ background: var(--signal); color:#1a1200; font-weight:700; }
+  .btn-solid:hover{ filter: brightness(1.1); transform: translateY(-1px); }
+  .btn-ghost{ border: 1px solid rgba(241,237,226,0.3); color: var(--ink); backdrop-filter: blur(6px); }
+  .btn-ghost:hover{ border-color: var(--ink); background: rgba(255,255,255,0.06); }
+
+  .hero-stats{
+    display:flex; gap: 36px; flex-wrap: wrap;
+    font-family: var(--font-mono);
+  }
+  .stat-num{ font-size: 24px; color: var(--ink); font-weight: 600; }
+  .stat-label{ font-size: 10px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 2px;}
+
+  /* ---------- archive ---------- */
+  .archive{ padding: 76px 0 40px; position:relative; z-index:2; }
+  .archive-head{
+    display:flex; align-items:flex-end; justify-content:space-between;
+    gap: 20px; flex-wrap: wrap; margin-bottom: 30px;
+  }
+  .archive-head h2{
+    font-family: var(--font-display); font-size: 30px; margin:0 0 6px;
+    font-weight: 700;
+  }
+  .archive-head p{ margin:0; color: var(--muted); font-size: 14px; font-family: var(--font-mono); }
+
+  .filters{ display:flex; gap: 10px; flex-wrap: wrap; }
+  .filter-btn{
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em;
+    background: transparent; border: 1px solid var(--line);
+    color: var(--ink-dim); padding: 9px 16px; border-radius: 999px;
+    cursor: pointer; transition: all .2s ease;
+    text-transform: uppercase;
+  }
+  .filter-btn:hover{ border-color: var(--ink-dim); color: var(--ink); }
+  .filter-btn.active{
+    background: var(--ink); color: var(--bg); border-color: var(--ink);
+    font-weight: 600;
+  }
+
+  .log{ border-top: 1px solid var(--line); }
+  .row{
+    display:grid;
+    grid-template-columns: 128px 76px 1fr 120px 52px;
+    gap: 18px;
+    align-items:center;
+    padding: 16px 10px;
+    border-bottom: 1px solid var(--line);
+    text-decoration:none; color: inherit;
+    position: relative;
+    cursor: pointer;
+    transition: background .25s ease;
+    border-radius: 10px;
+  }
+  .row:hover{ background: var(--glass); }
+  .row:hover .row-play{ background: var(--signal); color: #1a1200; transform: scale(1.06);}
+  .row:hover .row-title{ color: var(--signal); }
+  .row:hover .thumb img{ transform: scale(1.08); }
+
+  .thumb{
+    position:relative; width:128px; aspect-ratio: 16/9; border-radius: 8px; overflow:hidden;
+    background: var(--bg-raised-2); border: 1px solid var(--line);
+  }
+  .thumb img{ width:100%; height:100%; object-fit:cover; transition: transform .4s ease; }
+  .thumb::after{
+    content:''; position:absolute; inset:0;
+    background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,0.55) 100%);
+  }
+  .thumb-fallback-num{
+    display:none; position:absolute; inset:0; align-items:center; justify-content:center;
+    font-family: var(--font-mono); font-size: 20px; color: var(--muted);
+    background: linear-gradient(135deg, var(--bg-raised-2), var(--bg-raised));
+  }
+  .thumb.thumb-empty{ display:block; }
+  .thumb.thumb-empty .thumb-fallback-num{ display:flex; }
+
+  .row-num{
+    font-family: var(--font-mono); color: var(--muted); font-size: 13px;
+  }
+  .row-num .n{ color: var(--ink-dim); font-size: 16px; display:block; }
+  .row-num .d{ font-size: 10px; margin-top:3px; letter-spacing:0.03em; }
+
+  .row-main{ min-width: 0; }
+  .row-title{
+    font-family: var(--font-display); font-weight: 600; font-size: 17px;
+    margin: 0 0 6px; transition: color .2s ease;
+  }
+  .row-teaser{ font-size: 13.5px; color: var(--muted); margin:0; }
+
+  .row-tag{
+    justify-self: start;
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 6px 10px; border-radius: 999px;
+    border: 1px solid var(--line); white-space:nowrap;
+  }
+
+  .row-play{
+    width: 42px; height: 42px; border-radius: 50%;
+    border: 1px solid var(--line); display:flex; align-items:center; justify-content:center;
+    color: var(--ink-dim); transition: all .2s ease; justify-self:end;
+  }
+  .row-play svg{ width:14px; height:14px; }
+
+  .row.hidden{ display:none; }
+
+  @media (max-width: 760px){
+    .row{ grid-template-columns: 84px 1fr 40px; }
+    .row-num, .row-tag{ display:none; }
+    .thumb{ width: 84px; }
+    .nav-links a:not(.pill){ display:none; }
+    .hero{ align-items:flex-end; min-height: 78vh; }
+  }
+
+  /* ---------- host / about ---------- */
+  .about{
+    padding: 100px 0; border-top: 1px solid var(--line-soft);
+    position:relative; z-index:2;
+  }
+  .about-grid{
+    display:grid; grid-template-columns: 0.9fr 1.1fr; gap: 56px; align-items:center;
+  }
+  .about-media{ position:relative; }
+  .about-media .frame{
+    border-radius: 16px; overflow:hidden; border: 1px solid var(--line);
+    position: relative;
+  }
+  .about-media .frame img{ width:100%; display:block; filter: grayscale(0.15) contrast(1.05); }
+  .about-media .frame-small{
+    position:absolute; width: 46%; bottom:-30px; right:-30px;
+    border-radius: 12px; overflow:hidden; border: 3px solid var(--bg);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  }
+  .about-media .frame-small img{ width:100%; display:block; }
+  .about-tagline{
+    position:absolute; top:16px; left:16px;
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing:0.1em;
+    background: rgba(8,9,10,0.65); backdrop-filter: blur(6px);
+    color: var(--signal); padding: 6px 12px; border-radius: 999px;
+    text-transform: uppercase; border: 1px solid rgba(255,180,0,0.35);
+  }
+
+  .about-copy .eyebrow{ margin-bottom: 14px; }
+  .about h2{ font-family: var(--font-display); font-size: 30px; margin: 0 0 18px; font-weight:700; }
+  .about p{ color: var(--ink-dim); font-size: 15px; margin: 0 0 16px; max-width: 54ch; }
+
+  .legend{ display:flex; flex-direction:column; gap: 12px; margin-top: 26px; }
+  .legend-item{ display:flex; align-items:center; gap: 12px; font-family: var(--font-mono); font-size: 12.5px; color: var(--ink-dim); }
+  .swatch{ width: 10px; height: 10px; border-radius: 3px; flex-shrink:0; }
+
+  .host-name{
+    display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+    margin: -4px 0 18px;
+  }
+  .host-name .n{ font-family: var(--font-display); font-weight:700; font-size: 17px; color: var(--ink); }
+  .host-name .r{ font-family: var(--font-mono); font-size: 11px; color: var(--signal); letter-spacing:0.06em; text-transform:uppercase; }
+  .host-socials{ display:flex; gap: 12px; margin-top: 30px; flex-wrap:wrap; }
+  .host-socials a{
+    font-family: var(--font-mono); font-size: 12px; letter-spacing:0.03em;
+    text-decoration:none; color: var(--ink-dim);
+    border: 1px solid var(--line); padding: 10px 16px; border-radius: 999px;
+    display:inline-flex; align-items:center; gap:8px;
+    transition: all .2s ease;
+  }
+  .host-socials a:hover{ color: var(--signal); border-color: var(--signal); background: rgba(255,180,0,0.06); }
+
+  @media (max-width: 800px){
+    .about-grid{ grid-template-columns: 1fr; gap: 60px; }
+    .about-media .frame-small{ width: 42%; bottom:-24px; right: -14px; }
+  }
+
+  /* ---------- footer ---------- */
+  footer{
+    border-top: 1px solid var(--line-soft);
+    padding: 34px 0 46px;
+    position:relative; z-index:2;
+  }
+  .foot-row{
+    display:flex; justify-content:space-between; align-items:center;
+    flex-wrap: wrap; gap: 14px;
+    font-family: var(--font-mono); font-size: 11.5px; color: var(--muted);
+  }
+  .foot-row a{ color: var(--ink-dim); text-decoration:none; }
+  .foot-row a:hover{ color: var(--signal); }
+
+  /* ---------- video modal ---------- */
+  .modal-backdrop{
+    position: fixed; inset:0; z-index: 100;
+    background: rgba(4,4,5,0.88); backdrop-filter: blur(6px);
+    display:none; align-items:center; justify-content:center;
+    padding: 24px;
+  }
+  .modal-backdrop.open{ display:flex; }
+  .modal{
+    width: 100%; max-width: 920px;
+    background: var(--bg-raised); border: 1px solid var(--line);
+    border-radius: 14px; overflow:hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  }
+  .modal-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 16px 20px; border-bottom: 1px solid var(--line);
+  }
+  .modal-title{ font-family: var(--font-display); font-weight:600; font-size:15px; }
+  .modal-close{
+    background:none; border:1px solid var(--line); color: var(--ink-dim);
+    width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:16px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .modal-close:hover{ color: var(--signal); border-color: var(--signal); }
+  .modal-frame{ position:relative; width:100%; aspect-ratio:16/9; background:#000; }
+  .modal-frame iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+  .modal-foot{
+    padding: 14px 20px; display:flex; justify-content:flex-end;
+  }
+  .modal-foot a{
+    font-family: var(--font-mono); font-size: 12px; color: var(--signal);
+    text-decoration:none; display:inline-flex; align-items:center; gap:6px;
+  }
+  .modal-foot a:hover{ text-decoration:underline; }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<header>
+  <div class="wrap nav">
+    <a href="#top" class="brand">
+      <span class="brand-mark">POST<span>HUMAN</span>SOCIETY</span>
+      <span class="brand-sub">Live transmissions</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#archive">Archive</a>
+      <a href="#about">Host</a>
+      <a class="pill" href="https://www.youtube.com/channel/UCheG0ljNlQFua-ap6LaHcyw" target="_blank" rel="noopener">Channel ↗</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-scrim"></div>
+    <div class="wrap">
+      <div class="eyebrow"><span class="dot"></span> Archive online · 14 sessions logged</div>
+      <h1 class="mega">Post Human<br>Society</h1>
+      <p class="hero-sub">A running whiteboard series on crypto, AI, money and what's left of the old world once the machines catch up. Every live session, indexed and playable right here.</p>
+      <div class="hero-cta">
+        <a class="btn btn-solid" href="#archive">▶ Enter the Archive</a>
+        <a class="btn btn-ghost" href="https://www.youtube.com/channel/UCheG0ljNlQFua-ap6LaHcyw" target="_blank" rel="noopener">Subscribe on YouTube ↗</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="stat-num">14</div><div class="stat-label">Sessions</div></div>
+        <div><div class="stat-num">05</div><div class="stat-label">Subjects</div></div>
+        <div><div class="stat-num">01</div><div class="stat-label">Whiteboard</div></div>
+        <div><div class="stat-num">∞</div><div class="stat-label">Follow-ups</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="archive" id="archive">
+    <div class="wrap">
+      <div class="archive-head">
+        <div>
+          <h2>The Archive</h2>
+          <p>// sorted by transmission date, earliest first — tap any session to play</p>
+        </div>
+        <div class="filters" id="filters"></div>
+      </div>
+
+      <div class="log" id="log"></div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="wrap about-grid">
+      <div class="about-media">
+        <div class="frame">
+          <span class="about-tagline">On the whiteboard</span>
+          <img src="images/vd-06.jpg" alt="Host presenting a Post Human Society whiteboard session">
+        </div>
+        <div class="frame-small">
+          <img src="images/vd-03.jpg" alt="Host portrait">
+        </div>
+      </div>
+      <div class="about-copy">
+        <div class="eyebrow"><span class="dot"></span> The host</div>
+        <h2>One whiteboard. No script.</h2>
+        <div class="host-name"><span class="n">Hitesh Malviya</span><span class="r">OG · Crypto</span></div>
+        <p>Post Human Society started as a whiteboard and a live camera — an ongoing, unscripted attempt to think through what happens to money, work and identity once intelligence stops being scarce.</p>
+        <p>The whiteboard belongs to Hitesh Malviya, an OG in the crypto space and the founder behind DYOR, one of the best-known on-chain data and analytics tools in the industry. Here, he steps away from the dashboards to just think out loud — session by session, in front of whoever shows up to watch it happen.</p>
+        <div class="host-socials">
+          <a href="https://x.com/hmalviya9" target="_blank" rel="noopener">𝕏 @hmalviya9</a>
+          <a href="https://www.youtube.com/@HiteshMalviya91" target="_blank" rel="noopener">▶ YouTube ↗</a>
+        </div>
+        <div class="legend" id="legend"></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-row">
+    <span>Post Human Society — an archive of live sessions.</span>
+    <a href="https://www.youtube.com/channel/UCheG0ljNlQFua-ap6LaHcyw" target="_blank" rel="noopener">Watch on YouTube ↗</a>
+  </div>
+</footer>
+
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="modalTitle">Session</div>
+      <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-frame" id="modalFrame"></div>
+    <div class="modal-foot">
+      <a id="modalLink" href="#" target="_blank" rel="noopener">Watch on YouTube ↗</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const TAGS = {
+    crypto:  { label: 'Crypto',  color: 'var(--c-crypto)' },
+    ai:      { label: 'AI & AGI', color: 'var(--c-ai)' },
+    economy: { label: 'Economy', color: 'var(--c-economy)' },
+    culture: { label: 'Culture', color: 'var(--c-culture)' },
+    career:  { label: 'Career',  color: 'var(--c-career)' },
+  };
+
+  const SESSIONS = [
+    { n:1,  id:'1SNxJhCNPqA', date:'Jun 14, 2026', title:'The Future of Crypto',            teaser:'Whiteboard session #1 — sketching out where crypto goes from here.', tag:'crypto' },
+    { n:2,  id:'_q4dYTUnvY8', date:'Jun 15, 2026', title:'Crypto Anarchy',                  teaser:'Session #2 — crypto anarchy and what a post-human society could look like.', tag:'crypto' },
+    { n:3,  id:'v5u2bPYxj0M', date:'Jun 16, 2026', title:'Foundations',                     teaser:'Session #3 — laying the philosophical groundwork for the series.', tag:'culture' },
+    { n:4,  id:'wAD2_DkZPgI', date:'Jun 18, 2026', title:'Future of Crypto, Revisited',     teaser:'Live stream #4 — another pass at where crypto is headed next.', tag:'crypto' },
+    { n:5,  id:'56mnMnNyLZM', date:'Jun 18, 2026', title:'Quantum Computing',               teaser:'Live stream #5 — quantum computing and what it means for the road ahead.', tag:'ai' },
+    { n:6,  id:'XLLeTHqoIMk', date:'Jun 21, 2026', title:'The Crypto Authoritarian State',  teaser:'Session #6 — imagining a crypto-authoritarian state, and its risks.', tag:'crypto' },
+    { n:7,  id:'SMO9RXiqeEc', date:'Jun 22, 2026', title:'Crypto Anarchy State',            teaser:'Session #7 — going deeper on the idea of a crypto anarchy state.', tag:'crypto' },
+    { n:8,  id:'a81gQKuVjpU', date:'Jun 23, 2026', title:'The Great UBI Trap',              teaser:'Session #8 — unpacking universal basic income and its hidden trap.', tag:'economy', thumb:'images/session-08-thumb.jpg' },
+    { n:9,  id:'peeDc6FCjYQ', date:'Jun 24, 2026', title:'Permanent Underclass',            teaser:'Session #9 — the risk of a permanent economic underclass.', tag:'economy' },
+    { n:10, id:'geIzc2wQUs8', date:'Jun 27, 2026', title:'Vibecoding Career Roadmap',       teaser:'Session #10 — a roadmap for building a career around vibecoding.', tag:'career' },
+    { n:11, id:'Dt2qq7Xi-UQ', date:'Jun 29, 2026', title:'AI Stocks to Watch',              teaser:'Session #11 — AI-related stocks worth keeping an eye on.', tag:'economy' },
+    { n:12, id:'2emELHyXPbo', date:'Jun 30, 2026', title:'Investing in the Future of AGI',  teaser:'Session #12 — how to think about investing around AGI.', tag:'ai' },
+    { n:13, id:'n8gLDOFB2O8', date:'Jul 1, 2026',  title:'Dead Internet Theory',            teaser:'Session #13 — is the internet already dead? examining the theory.', tag:'culture' },
+    { n:14, id:'0X48s-b7MLs', date:'Jul 2, 2026',  title:'The Death of Bitcoin',            teaser:'Session #14 — could bitcoin actually die? making the case.', tag:'crypto' },
+  ];
+
+  const pad = n => String(n).padStart(2,'0');
+  const watchUrl = id => `https://www.youtube.com/watch?v=${id}`;
+  const thumbUrl = id => `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+  const embedUrl = id => `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+
+  // YouTube serves a generic 120x90 grey placeholder for hqdefault/mqdefault/sddefault
+  // when no real thumbnail has been generated for a video, instead of a 404.
+  // We detect that exact size on load and swap to our own numbered placeholder.
+  function showThumbFallback(img){
+    img.onerror = null;
+    img.style.display = 'none';
+    img.closest('.thumb').classList.add('thumb-empty');
+  }
+  function handleThumbLoad(img){
+    if(img.naturalWidth === 120 && img.naturalHeight === 90){
+      showThumbFallback(img);
+    }
+  }
+  function handleThumbError(img){
+    showThumbFallback(img);
+  }
+
+  // filters
+  const filtersEl = document.getElementById('filters');
+  const allBtn = document.createElement('button');
+  allBtn.className = 'filter-btn active';
+  allBtn.textContent = 'All';
+  allBtn.dataset.tag = 'all';
+  filtersEl.appendChild(allBtn);
+  Object.entries(TAGS).forEach(([key, t]) => {
+    const b = document.createElement('button');
+    b.className = 'filter-btn';
+    b.textContent = t.label;
+    b.dataset.tag = key;
+    filtersEl.appendChild(b);
+  });
+
+  filtersEl.addEventListener('click', e => {
+    const btn = e.target.closest('.filter-btn');
+    if(!btn) return;
+    filtersEl.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const tag = btn.dataset.tag;
+    document.querySelectorAll('.row').forEach(row => {
+      row.classList.toggle('hidden', tag !== 'all' && row.dataset.tag !== tag);
+    });
+  });
+
+  // modal
+  const modal = document.getElementById('modal');
+  const modalFrame = document.getElementById('modalFrame');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalLink = document.getElementById('modalLink');
+
+  function openModal(session){
+    modalTitle.textContent = `#${pad(session.n)} — ${session.title}`;
+    modalFrame.innerHTML = `<iframe src="${embedUrl(session.id)}" title="${session.title}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    modalLink.href = watchUrl(session.id);
+    modal.classList.add('open');
+  }
+  function closeModal(){
+    modal.classList.remove('open');
+    modalFrame.innerHTML = '';
+  }
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
+
+  // log rows
+  const logEl = document.getElementById('log');
+  SESSIONS.forEach(s => {
+    const t = TAGS[s.tag];
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.id = 's' + s.n;
+    row.dataset.tag = s.tag;
+    const thumbSrc = s.thumb ? s.thumb : thumbUrl(s.id);
+    const thumbHandlers = s.thumb ? '' : `onload="handleThumbLoad(this)" onerror="handleThumbError(this)"`;
+    row.innerHTML = `
+      <div class="thumb"><img loading="lazy" src="${thumbSrc}" alt="${s.title} thumbnail" ${thumbHandlers}><span class="thumb-fallback-num">${pad(s.n)}</span></div>
+      <div class="row-num"><span class="n">${pad(s.n)}</span><span class="d">${s.date}</span></div>
+      <div class="row-main">
+        <p class="row-title">${s.title}</p>
+        <p class="row-teaser">${s.teaser}</p>
+      </div>
+      <div class="row-tag" style="color:${t.color}; border-color:${t.color}44;">${t.label}</div>
+      <div class="row-play" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    `;
+    row.addEventListener('click', () => openModal(s));
+    logEl.appendChild(row);
+  });
+
+  // legend
+  const legendEl = document.getElementById('legend');
+  Object.values(TAGS).forEach(t => {
+    const item = document.createElement('div');
+    item.className = 'legend-item';
+    item.innerHTML = `<span class="swatch" style="background:${t.color}"></span> ${t.label}`;
+    legendEl.appendChild(item);
+  });
+</script>
+
+</body>
+</html>
